@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
     
         $faker = Factory::create('fr-FR');
         
-        for($u = 0 ; $u<10; $u++){
+        for($u = 0 ; $u < 10; $u++){
             $user = new User();
             $chrono = 1 ;
             $hash = $this->encoder->encodePassword($user,"pass");
