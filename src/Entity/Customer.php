@@ -15,8 +15,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
  * @ApiResource(
- * collectionOperations={"GET","POST"},
- * itemOperations={"GET","PUT","DELETE"},
+ * collectionOperations={"GET"={"path"="/clients"},"POST"={"path"="/clients"}},
+ * itemOperations={"GET"={"path"="/client/{id}"},"PUT"={"path"="/client/{id}"},"DELETE"={"path"="/client/{id}"}},
  * normalizationContext={
  * "groups"={"customers_read"}
  * }
