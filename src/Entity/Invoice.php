@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\InvoiceRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -67,6 +68,17 @@ class Invoice
     {
         return $this->id;
     }
+
+
+    /**
+     *recupere les users
+     *@Groups({"invoices_read"})
+     * @return User
+     */
+    public function getUser(){
+        return $this->customer->getUser();
+    }
+
 
     public function getAmount(): ?float
     {

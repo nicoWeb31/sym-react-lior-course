@@ -15,6 +15,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
  * @ApiResource(
+ * collectionOperations={"GET","POST"},
+ * itemOperations={"GET","PUT","DELETE"},
  * normalizationContext={
  * "groups"={"customers_read"}
  * }
@@ -66,7 +68,7 @@ class Customer
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="customers")
-     * @Groups({"customers_read","invoices_read"})
+     * @Groups({"customers_read"})
      * 
      */
     private $user;
@@ -75,6 +77,32 @@ class Customer
     {
         $this->invoices = new ArrayCollection();
     }
+
+
+    /**
+     * retupere la somme des invoices
+     * @Groups({"customers_read"})
+     * @return float
+     */
+    public function getAmoutTotal()
+    {
+        return array_reduce($this->invoices->toArray(),function($total, $invoice){
+            return $total + $invoice->getAmount();
+        },0);
+    }
+
+        /**
+     * retupere la somme des invoices non payé
+     * @Groups({"customers_read"})
+     * @return float
+     */
+    public function getUnpaidTotal()
+    {
+        return array_reduce($this->invoices->toArray(),function($total, $invoice){
+            return $total + ($invoice->getStatus() === "PAID" ||$invoice->getStatus() === "CANCELLED" ? 0 : $invoice->getAmount());
+        },0);
+    }
+
 
     public function getId(): ?int
     {
