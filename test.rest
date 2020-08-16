@@ -1,11 +1,26 @@
 
 //recuperation des customers
-GET http://127.0.0.1:8000/api/customers
+GET http://127.0.0.1:8000/api/clients
+
+###
+
+//recuperation des invoices d'un customer grace au subresource
+GET http://127.0.0.1:8000/api/client/317/factures
+
+###
+
+//incremente le chrono d'une fature
+POST http://127.0.0.1:8000/api/invoices/1621/increment
+content-type: application/json
+
+{
+
+}
 
 ###
 
 //recuperation des customers plus filtre fistName choix de strategy end, exact,partial ex....
-GET http://127.0.0.1:8000/api/customers?firstName=Fr&LastName=Reichel
+GET http://127.0.0.1:8000/api/clients?firstName=Fr&LastName=Reichel
 
 ###
 
