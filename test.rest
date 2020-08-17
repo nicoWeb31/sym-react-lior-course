@@ -68,3 +68,17 @@ content-type: application/json
     "sentAt":"2019-12-05",
     "customer":"\/api\/client\/314"
 }
+
+
+###
+
+//creation d'un utilisateur
+POST http://127.0.0.1:8000/api/users
+content-type: application/json
+
+{
+    "firstName":"nico",
+    "lastName":"riot",
+    "email":"nico.riot@free.fr",
+    "password":"pass"
+}
