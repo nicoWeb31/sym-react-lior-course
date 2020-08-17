@@ -54,3 +54,17 @@ content-type: application/json
     "email":"totool@asticot.fr",
     "user":"\/api\/users\/31"
 }
+
+###
+
+//creation d'une factures
+POST http://127.0.0.1:8000/api/invoices
+content-type: application/json
+
+{
+    "amount":500,
+    "chrono":34,
+    "status":"PAID",
+    "sentAt":"2019-12-05",
+    "customer":"\/api\/client\/314"
+}
