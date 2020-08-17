@@ -41,3 +41,16 @@ GET http://127.0.0.1:8000/api/invoices?pagination=false
 
 //recuperation des facture pas de pagination + order
 GET http://127.0.0.1:8000/api/invoices?order[amount]=desc
+
+###
+
+//creation d'un customer
+POST http://127.0.0.1:8000/api/clients
+content-type: application/json
+
+{
+    "firstName":"teeee",
+    "lastName":"lfghfhg",
+    "email":"totool@asticot.fr",
+    "user":"\/api\/users\/31"
+}
