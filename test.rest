@@ -80,9 +80,9 @@ POST http://127.0.0.1:8000/api/users
 content-type: application/json
 
 {
-    "firstName":"nicof",
+    "firstName":"nicoff",
     "lastName":"riotd",
-    "email":"nico.riot@freef.fr",
+    "email":"nico.rifot@freef.fr",
     "password":"pass"
 }
 
