@@ -50,12 +50,13 @@ GET http://127.0.0.1:8000/api/invoices?order[amount]=desc
 //creation d'un customer
 POST http://127.0.0.1:8000/api/clients
 content-type: application/json
+Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1OTc3NTk1MzcsImV4cCI6MTU5Nzc2MzEzNywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiam9oYW4ub3JlaWxseUB3aXR0aW5nLm9yZyJ9.l0UQaLewxFstX_aZbsXD4CavCzva8u1R52Vw5wcZ34Y-mjPVIk0sbeYCVhHg5ze1a9UHLlT7kmVAXHJzYSMT4oL5sb7J-YytyC1f5lQWOrAYF0LGTwbLh7me4tUZPzoPAfgaezwZxwYWytfi81LvKftkKaYr8pO6ucRaJk5gMiX26wMX4HACBg4wkHJVvprOO54h9Sp30uHyId7sXiRqs0i_WhPTlbE2aEXpRXGa-u-1hnYAhWBHQrxN2eZ0GH_4Njk0p6J3pQw15pcRRei2xPC7eH9_DUdOgWaoia_3G3gT8tLuqQHudfQev_PnqeqUvoHt_xG5EVgWNVJOe-w64rMirMTJvYGTaQRsLPKvDDYOXXoXeRcmXvDZsUFThwDMBh1y91vy1NHnWPx-fg16LN3CV9gfa0l2ye-mmRpNP3hf1GJ9MIP_E8LH7lo_O-aPCnJ-udBCrBamBltemnOXdm2SBF2WGag1pZT9KzZFhsJ_-AFHePIMxqNTidnz2CNhrC9FtsWlnDFY8m6OnuYXIlEthTn420qhOYrt3kKWvVHNWQOWTtvbpBJ9IXEUixCBfkNgIIh4aCxv-RcqzmIC4E_3hiVGWOZh94GyOhi5gONpT-i7qxu3npH2EJhYZMv3DWOLQ_wRkyM2JWZ3aDyk6vSAXXDTTXcgC900l5B6Nes
+
 
 {
-    "firstName":"teeeedf",
-    "lastName":"lfghfhg",
-    "email":"totool@astdficot.fr",
-    "user":"\/api\/users\/31"
+    "firstName":"teeeegdf",
+    "lastName":"lfghfghg",
+    "email":"totool@astdgficot.fr"
 }
 
 ###
@@ -82,7 +83,7 @@ content-type: application/json
 {
     "firstName":"nicoff",
     "lastName":"riotd",
-    "email":"nico.rifot@freef.fr",
+    "email":"nico.rifgot@freef.fr",
     "password":"pass"
 }
 
