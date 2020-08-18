@@ -1,11 +1,14 @@
 
 //recuperation des customers
 GET http://127.0.0.1:8000/api/clients
+Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1OTc3NTQ5MzEsImV4cCI6MTU5Nzc1ODUzMSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiam9oYW4ub3JlaWxseUB3aXR0aW5nLm9yZyJ9.r6gLqkr6dmY5gsjAakGykyNModvlKCTzvbT1UjeRcfUIMZgquQCfvSyzBY76NKn7JVymdPxptLLkJ-h6pkgWAQgTcH-pSTOcDSxx-27kGnyN_WCfpTVTAg03LUO_F-KTWMSfncf-8L3ysOfS2_sfEWZNcGkDqc9nH8EjsUXi2Epo2_4aFPLGck3BcNAEg7ImcfsdvJ1JSJuhih5B9qoQsQqVC7MkgC7iZ8ya4TmchOOCpyzPPvppV-yueM2-ZyJaz9MAuBOC4cX2bnq7iDxl68-TJQ87wtdrjDyP8caVxgo3W9OzPDvCnHUFM3DaFNn8ySMQ1Gxiza84XNKDCcA7LyKsbRqVlY8cXMFbRKQarIvKH3ppZdx6f00NZl_99ewdRO1eoeNJgKUaG7pXXt0FAjNyk-0dReTAlE1Xuf8C-auSSRt6bJN_O4vYidTuo1K_jM7sFjcz4zy2m0EFDZJS2llJods0rviBtqRsF5fr9EM7xJBCi1L55I6o_02NetdA2QYf7koTgeZ7_MP5ihIDix59iAlk9-kTyhm66U0yjh4QYvPYMfKvt9vbxhLN2MevBlzte1ikwrZt9UXt-AaNE1pn1-WwkTyyn7xySzWyFJxYJDwalr-DpJ6-Jx9B4TPOsREL9Y5e6Tyksc1t9_52Zc_neC2OXLSOUoHRUdVgzkw
 
 ###
 
 //recuperation des invoices d'un customer grace au subresource
 GET http://127.0.0.1:8000/api/client/317/factures
+Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1OTc3NTQ5MzEsImV4cCI6MTU5Nzc1ODUzMSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiam9oYW4ub3JlaWxseUB3aXR0aW5nLm9yZyJ9.r6gLqkr6dmY5gsjAakGykyNModvlKCTzvbT1UjeRcfUIMZgquQCfvSyzBY76NKn7JVymdPxptLLkJ-h6pkgWAQgTcH-pSTOcDSxx-27kGnyN_WCfpTVTAg03LUO_F-KTWMSfncf-8L3ysOfS2_sfEWZNcGkDqc9nH8EjsUXi2Epo2_4aFPLGck3BcNAEg7ImcfsdvJ1JSJuhih5B9qoQsQqVC7MkgC7iZ8ya4TmchOOCpyzPPvppV-yueM2-ZyJaz9MAuBOC4cX2bnq7iDxl68-TJQ87wtdrjDyP8caVxgo3W9OzPDvCnHUFM3DaFNn8ySMQ1Gxiza84XNKDCcA7LyKsbRqVlY8cXMFbRKQarIvKH3ppZdx6f00NZl_99ewdRO1eoeNJgKUaG7pXXt0FAjNyk-0dReTAlE1Xuf8C-auSSRt6bJN_O4vYidTuo1K_jM7sFjcz4zy2m0EFDZJS2llJods0rviBtqRsF5fr9EM7xJBCi1L55I6o_02NetdA2QYf7koTgeZ7_MP5ihIDix59iAlk9-kTyhm66U0yjh4QYvPYMfKvt9vbxhLN2MevBlzte1ikwrZt9UXt-AaNE1pn1-WwkTyyn7xySzWyFJxYJDwalr-DpJ6-Jx9B4TPOsREL9Y5e6Tyksc1t9_52Zc_neC2OXLSOUoHRUdVgzkw
+
 
 ###
 
@@ -49,9 +52,9 @@ POST http://127.0.0.1:8000/api/clients
 content-type: application/json
 
 {
-    "firstName":"teeee",
+    "firstName":"teeeedf",
     "lastName":"lfghfhg",
-    "email":"totool@asticot.fr",
+    "email":"totool@astdficot.fr",
     "user":"\/api\/users\/31"
 }
 
@@ -77,8 +80,19 @@ POST http://127.0.0.1:8000/api/users
 content-type: application/json
 
 {
-    "firstName":"nico",
-    "lastName":"riot",
-    "email":"nico.riot@free.fr",
+    "firstName":"nicof",
+    "lastName":"riotd",
+    "email":"nico.riot@freef.fr",
+    "password":"pass"
+}
+
+###
+
+//tester le login avec jwt
+POST http://127.0.0.1:8000/api/login_check
+content-type: application/json
+
+{
+    "username":"johan.oreilly@witting.org",
     "password":"pass"
 }
