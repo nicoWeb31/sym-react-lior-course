@@ -11,14 +11,14 @@ const Navbar = () => {
 
             <div className="collapse navbar-collapse" id="navbarColor02">
                 <ul className="navbar-nav mr-auto">
-                 
+
                     <li className="nav-item">
                         <a className="nav-link" href="#">Clients</a>
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" href="#">Factures</a>
                     </li>
-                  
+
                     <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                         <div className="dropdown-menu">
