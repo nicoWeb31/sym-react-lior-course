@@ -1,6 +1,18 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
+import axios from "axios";
 
-const CustomersPage = () => {
+const CustomersPage = props => {
+    
+    const[customers, SetCustomer] = useState([]);
+
+    useEffect(()=>{
+        axios.get('https://127.0.0.1:8000/api/clients')
+            .then(rep =>rep.data['hydra:member'])
+            .then(data => SetCustomer(data))
+    },[]);
+
+    
+
     return (
         <>
 
@@ -19,22 +31,25 @@ const CustomersPage = () => {
 
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="">Lior toto</a></td>
-                        <td> nico@free.fr</td>
-                        <td>nico </td>
+                {customers.map(customer => 
+                
+                    <tr key={customer.id}>
+                        <td>{customer.id}</td>
+                        <td><a href="">{customer.firstName} {customer.lastName}</a></td>
+                        <td>{customer.email}</td>
+                        <td>{customer.company}</td>
                         <td className="text-center">
                             <span className="badge badge-light">
 
-                                4
+                                {customer.invoices.length}
                 </span>
                         </td>
-                        <td className="text-center">4564675 €</td>
+                        <td className="text-center">{customer.totalAmount} €</td>
                         <td>
                             <button className="btn btn-warning">modifier</button>
                         </td>
                     </tr>
+                )}
                 </tbody>
 
 
