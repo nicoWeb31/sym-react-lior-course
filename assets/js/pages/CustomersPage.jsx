@@ -3,15 +3,41 @@ import axios from "axios";
 
 const CustomersPage = props => {
     
-    const[customers, SetCustomer] = useState([]);
+    const[customers, SetCustomers] = useState([]);
 
     useEffect(()=>{
         axios.get('https://127.0.0.1:8000/api/clients')
             .then(rep =>rep.data['hydra:member'])
-            .then(data => SetCustomer(data))
+            .then(data => SetCustomers(data))
+            .catch(err=>console.log(err.reponse));
     },[]);
 
-    
+
+    //delete customer
+    const deleteCustomer =(customerId)=>{
+        //je cree une copie du tab
+        const originalCustomers = [...customers];
+
+        //l'aproche optimiste on fait confiance a l'api et on retourne dessuite le nouveau tableau avant la eponse du server
+        //je met dessuite a jour mon tab
+        SetCustomers(customers.filter(cust => cust.id !== customerId))
+
+
+        //aproche pessimiste on controle la reponse de l'api si ok on trie le tableau
+
+
+        axios.delete(`https://127.0.0.1:8000/api/client/${customerId}`)
+            .then()
+            .catch(err=>{
+                //si err je remet mon tab comme il etait au debut
+                SetCustomers(originalCustomers);
+                console.log(err.response)
+            })
+
+
+        
+
+    }
 
     return (
         <>
@@ -44,9 +70,12 @@ const CustomersPage = props => {
                                 {customer.invoices.length}
                 </span>
                         </td>
-                        <td className="text-center">{customer.totalAmount} €</td>
+                        <td className="text-center">{customer.amoutTotal.toLocaleString()} €</td>
                         <td>
-                            <button className="btn btn-warning">modifier</button>
+                            <button className="btn btn-danger"
+                            onClick={()=>deleteCustomer(customer.id)}
+                            disabled={customer.invoices.length > 0}
+                            >Suprimer</button>
                         </td>
                     </tr>
                 )}
