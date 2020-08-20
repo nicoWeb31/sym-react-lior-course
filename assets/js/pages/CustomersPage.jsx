@@ -1,20 +1,21 @@
-import React, {useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 
 const CustomersPage = props => {
-    
-    const[customers, SetCustomers] = useState([]);
 
-    useEffect(()=>{
+    const [customers, SetCustomers] = useState([]);
+    const [curentPage, SetCurrentPage] = useState(1);
+
+    useEffect(() => {
         axios.get('https://127.0.0.1:8000/api/clients')
-            .then(rep =>rep.data['hydra:member'])
+            .then(rep => rep.data['hydra:member'])
             .then(data => SetCustomers(data))
-            .catch(err=>console.log(err.reponse));
-    },[]);
+            .catch(err => console.log(err.reponse));
+    }, []);
 
 
     //delete customer
-    const deleteCustomer =(customerId)=>{
+    const deleteCustomer = (customerId) => {
         //je cree une copie du tab
         const originalCustomers = [...customers];
 
@@ -28,16 +29,37 @@ const CustomersPage = props => {
 
         axios.delete(`https://127.0.0.1:8000/api/client/${customerId}`)
             .then()
-            .catch(err=>{
+            .catch(err => {
                 //si err je remet mon tab comme il etait au debut
                 SetCustomers(originalCustomers);
                 console.log(err.response)
-            })
-
-
-        
+            });
 
     }
+
+
+    //---------pagination----------//
+    const itemsPerPage = 10;
+    const pageCount = Math.ceil(customers.length / itemsPerPage);    //math.ceil arondi a l'entier superieur
+    const pages = [];
+    for (let i = 1 ; i<= pageCount; i++){
+        pages.push(i)
+    }
+
+
+    const handleChangePage = (page) =>{
+        SetCurrentPage(page)
+    }
+
+
+    //start  et pendant combien
+    const start = curentPage * itemsPerPage - itemsPerPage;
+    //    10 =  2         * 10 - 10
+    const paginationCustomer = customers.slice(start, start + itemsPerPage); //slice decoupe un morceau de tableau
+
+
+
+
 
     return (
         <>
@@ -57,32 +79,57 @@ const CustomersPage = props => {
 
                 </thead>
                 <tbody>
-                {customers.map(customer => 
-                
-                    <tr key={customer.id}>
-                        <td>{customer.id}</td>
-                        <td><a href="">{customer.firstName} {customer.lastName}</a></td>
-                        <td>{customer.email}</td>
-                        <td>{customer.company}</td>
-                        <td className="text-center">
-                            <span className="badge badge-light">
+                    {paginationCustomer.map(customer =>
 
-                                {customer.invoices.length}
-                </span>
-                        </td>
-                        <td className="text-center">{customer.amoutTotal.toLocaleString()} €</td>
-                        <td>
-                            <button className="btn btn-danger"
-                            onClick={()=>deleteCustomer(customer.id)}
-                            disabled={customer.invoices.length > 0}
-                            >Suprimer</button>
-                        </td>
-                    </tr>
-                )}
+                        <tr key={customer.id}>
+                            <td>{customer.id}</td>
+                            <td><a href="">{customer.firstName} {customer.lastName}</a></td>
+                            <td>{customer.email}</td>
+                            <td>{customer.company}</td>
+                            <td className="text-center">
+                                <span className="badge badge-light">
+
+                                    {customer.invoices.length}
+                                </span>
+                            </td>
+                            <td className="text-center">{customer.amoutTotal.toLocaleString()} €</td>
+                            <td>
+                                <button className="btn btn-danger"
+                                    onClick={() => deleteCustomer(customer.id)}
+                                    disabled={customer.invoices.length > 0}
+                                >Suprimer</button>
+                            </td>
+                        </tr>
+                    )}
                 </tbody>
 
 
             </table>
+
+            <div>
+                <ul className="pagination pagination-lg">
+                    <li className={"page-item " + (curentPage === 1 && "disabled")}>
+                        <button className="page-link"
+                        onClick={()=>handleChangePage(curentPage -1)}
+                        >&laquo;</button>
+                    </li>
+                    {
+                        pages.map(page => (
+                        <li className={"page-item " + (curentPage === page && "active")} key={page}>
+                            <button className="page-link"
+                            onClick={()=>handleChangePage(page)}
+                            >{page}</button>
+                        </li>
+                        
+                        ))
+                    }
+                    <li className={"page-item " + (curentPage === pageCount && "disabled")}>
+                        <button className="page-link"
+                        onClick={()=>handleChangePage(curentPage + 1)}
+                        >&raquo;</button>
+                    </li>
+                </ul>
+            </div>
 
         </>
     );
