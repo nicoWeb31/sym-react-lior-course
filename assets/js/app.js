@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Homepage from './pages/Homepage';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import CustomersPage from './pages/CustomersPage';
+import CustomerPagePagApi from './pages/CustomerPagePagApi';
 
 
 import '../css/app.css';

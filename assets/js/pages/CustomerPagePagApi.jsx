@@ -2,17 +2,24 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Pagination from "../components/Pagination"
 
-const CustomersPage = props => {
+const CustomerPagePagApi = props => {
 
     const [customers, SetCustomers] = useState([]);
     const [curentPage, SetCurrentPage] = useState(1);
+    const [totlalItems, setTotalItems] = useState(0);
+        //---------pagination----------//
+        const itemsPerPage = 10;
 
     useEffect(() => {
-        axios.get('https://127.0.0.1:8000/api/clients')
-            .then(rep => rep.data['hydra:member'])
-            .then(data => SetCustomers(data))
+        axios.get(`https://127.0.0.1:8000/api/clients?pagination=true&itemsPerPage=${itemsPerPage}&page=${curentPage}`)
+            .then(rep =>{
+                SetCustomers(rep.data['hydra:member'])
+                setTotalItems(rep.data['hydra:totalItems'])
+            }) 
+                
+
             .catch(err => console.log(err.reponse));
-    }, []);
+    }, [curentPage]);
 
 
     //delete customer
@@ -39,19 +46,19 @@ const CustomersPage = props => {
     }
 
 
-    //---------pagination----------//
-    const itemsPerPage = 10;
-    const paginationCustomer = Pagination.getData(customers,curentPage,itemsPerPage);
-    const handleChangePage = (page) =>{
+
+    //const paginationCustomer = Pagination.getData(customers, curentPage, itemsPerPage);
+    const handleChangePage = (page) => {
+        SetCustomers([]);
         SetCurrentPage(page)
     }
-    
+
 
 
     return (
         <>
 
-            <h1>Liste des customers</h1>
+            <h1>Liste des customers(pagination api)</h1>
             <table className="table table-hover">
                 <thead>
                     <tr>
@@ -66,7 +73,12 @@ const CustomersPage = props => {
 
                 </thead>
                 <tbody>
-                    {paginationCustomer.map(customer =>
+                {customers === 0 && (
+                    <tr>
+                        <td>Chargement ....</td>
+                    </tr>
+                )  }
+                    {customers.map(customer =>
 
                         <tr key={customer.id}>
                             <td>{customer.id}</td>
@@ -93,13 +105,13 @@ const CustomersPage = props => {
 
             </table>
 
-            <Pagination curentPage={curentPage} itemsPerPage={itemsPerPage} length={customers.length} handleChangePage={handleChangePage} />
+            <Pagination curentPage={curentPage} itemsPerPage={itemsPerPage} length={totlalItems} handleChangePage={handleChangePage} />
 
         </>
     );
 
-    
+
 }
 
 
-export default CustomersPage;
+export default CustomerPagePagApi;
