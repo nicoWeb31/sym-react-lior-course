@@ -37,8 +37,8 @@ GET http://127.0.0.1:8000/api/clients?firstName=Fr&LastName=Reichel
 
 
 //recuperation des facture 
-GET http://127.0.0.1:8000/api/invoices?page=42
-Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1OTc3NzEwMzAsImV4cCI6MTU5Nzc3NDYzMCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImpvaGFuLm9yZWlsbHlAd2l0dGluZy5vcmciLCJmaXJzdE5hbWUiOiJTdXphbm5lIiwibGFzdE5hbWUiOiJGZWVuZXkifQ.Zmcw1_7EYLXu21J2paXp37yiLQsg2OdFkpp0QW0nUNQYjU6-wxhMmKwReQEAwVCIYSUaJK2AbN0JDePjuBQPK2OnZtmuDhfia6xpnYJbPAsOMfKJM0CF9fyhydEXWUpS1eYf8zav24Lv1ArevFWwRqpCudrjt37Fxb32HIOAvoGu-ksmOqrD3qIaGxJkMzt6mboCBnnvff4Hbdnz5s3_tiQGCcjt6yLPHIll0TNY2Cf9DrZbcHrVrKuxb4O_ceUWqUQKaXFOxStLWJMGF9e9feNsTnfHZb9JSFVL7lmkGeh3RsSeUAzl5AeAcsUbuSyjC4aIwdI9RRytE4fdEZEBriFteVpw86dzmslFjKVsCxJH3NLlQg9_TGjjplm3Lf9lCrfIw_E-hhZtKDHqvRaj4mWiNPd6zYJyIxRsJXCoByCZ-QgGIcz498Nsr8NZ9O5oHUFWfKj9sVFFJ5VYCXLV08K_jUR90J06cjMr4V4AE--Ok-1ROLdYtqY9M90IlC2XwGwhMky-z-O4EeiVu1NDPO_pAVYeB4p-NufTykKzqBkMy48PFvf8ZeYuRZz0FCWOztrf5OzNjc5Ng3x3xfLmITPa-ysGhB_6M3eUxihtiYgnIC1w9l1tKcQzCvCqaOWpzQVd3uU-f8gbFnWW-wsVWlRYJCsOhnOz8dePgM6EGLk
+GET http://127.0.0.1:8000/api/invoices
+//Authorization:Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1OTc3NzEwMzAsImV4cCI6MTU5Nzc3NDYzMCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImpvaGFuLm9yZWlsbHlAd2l0dGluZy5vcmciLCJmaXJzdE5hbWUiOiJTdXphbm5lIiwibGFzdE5hbWUiOiJGZWVuZXkifQ.Zmcw1_7EYLXu21J2paXp37yiLQsg2OdFkpp0QW0nUNQYjU6-wxhMmKwReQEAwVCIYSUaJK2AbN0JDePjuBQPK2OnZtmuDhfia6xpnYJbPAsOMfKJM0CF9fyhydEXWUpS1eYf8zav24Lv1ArevFWwRqpCudrjt37Fxb32HIOAvoGu-ksmOqrD3qIaGxJkMzt6mboCBnnvff4Hbdnz5s3_tiQGCcjt6yLPHIll0TNY2Cf9DrZbcHrVrKuxb4O_ceUWqUQKaXFOxStLWJMGF9e9feNsTnfHZb9JSFVL7lmkGeh3RsSeUAzl5AeAcsUbuSyjC4aIwdI9RRytE4fdEZEBriFteVpw86dzmslFjKVsCxJH3NLlQg9_TGjjplm3Lf9lCrfIw_E-hhZtKDHqvRaj4mWiNPd6zYJyIxRsJXCoByCZ-QgGIcz498Nsr8NZ9O5oHUFWfKj9sVFFJ5VYCXLV08K_jUR90J06cjMr4V4AE--Ok-1ROLdYtqY9M90IlC2XwGwhMky-z-O4EeiVu1NDPO_pAVYeB4p-NufTykKzqBkMy48PFvf8ZeYuRZz0FCWOztrf5OzNjc5Ng3x3xfLmITPa-ysGhB_6M3eUxihtiYgnIC1w9l1tKcQzCvCqaOWpzQVd3uU-f8gbFnWW-wsVWlRYJCsOhnOz8dePgM6EGLk
 
 ###
 
@@ -55,9 +55,10 @@ Authorization:Bearer
 
 
 {
-    "firstName":"teeeegdf",
-    "lastName":"lfghfghg",
-    "email":"totool@astdgficot.fr"
+    "firstName":"teeeedfgdf",
+    "lastName":"lfghfdfghg",
+    "email":"totofol@astdgficot.fr",
+
 }
 
 ###
@@ -84,7 +85,7 @@ content-type: application/json
 {
     "firstName":"nicoff",
     "lastName":"riotd",
-    "email":"nico.rifgot@freef.fr",
+    "email":"nico.rifgeot@freef.fr",
     "password":"pass"
 }
 

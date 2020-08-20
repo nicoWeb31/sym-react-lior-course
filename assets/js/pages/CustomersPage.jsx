@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from "axios";
-import Pagination from "../components/Pagination"
+import Pagination from "../components/Pagination";
+import custumerApi from "../services/custumerApi";
 
 const CustomersPage = props => {
 
@@ -9,52 +9,63 @@ const CustomersPage = props => {
     const [search, setSearch] = useState('');
 
 
-    useEffect(() => {
-        axios.get('https://127.0.0.1:8000/api/clients')
-            .then(rep => rep.data['hydra:member'])
-            .then(data => SetCustomers(data))
-            .catch(err => console.log(err.reponse));
-    }, []);
+    //recup des customers
+    const fetchCustomers = async () =>{
+        try{
+            const data = await custumerApi.findAll()
+            SetCustomers(data)    
+        }catch(err){
+            console.log(err.reponse);
+        }
+    }
+
+    //au chargement du composant
+    useEffect(() => {fetchCustomers()},[]);
 
 
     //delete customer
-    const deleteCustomer = (customerId) => {
+    const deleteCustomer = async (customerId) => {
         //je cree une copie du tab
         const originalCustomers = [...customers];
-
         //l'aproche optimiste on fait confiance a l'api et on retourne dessuite le nouveau tableau avant la eponse du server
         //je met dessuite a jour mon tab
         SetCustomers(customers.filter(cust => cust.id !== customerId))
-
-
         //aproche pessimiste on controle la reponse de l'api si ok on trie le tableau
 
-
-        axios.delete(`https://127.0.0.1:8000/api/client/${customerId}`)
+        try{
+            await custumerApi.delete(customerId)
             .then()
-            .catch(err => {
-                //si err je remet mon tab comme il etait au debut
-                SetCustomers(originalCustomers);
-                console.log(err.response)
-            });
 
+        }catch(err){
+
+            SetCustomers(originalCustomers);
+            console.log(err.response)
+        }
     }
+
+
+
 
 
     //---------pagination----------//
     const itemsPerPage = 10;
 
 
+    //filtrage des customers
     const fiteredCustomers = customers.filter(c=>c.firstName.toLowerCase().includes(search.toLowerCase())
     || c.lastName.toLowerCase().includes(search.toLowerCase())
     || c.email.toLowerCase().includes(search.toLowerCase())
     || (c.company && c.company.toLowerCase().includes(search.toLowerCase()))
     )
 
+
+    //--------------pagination des datas -------------------//
     const paginationCustomer = Pagination.getData(fiteredCustomers,curentPage,itemsPerPage);
     const handleChangePage = (page) =>{
         SetCurrentPage(page)
     }
+
+
 
     //---search-----//
     const handleSearch =(e)=>{
@@ -124,8 +135,6 @@ const CustomersPage = props => {
                 fiteredCustomers.length > itemsPerPage && 
                 <Pagination curentPage={curentPage} itemsPerPage={itemsPerPage} length={fiteredCustomers.length} handleChangePage={handleChangePage} />
             }
-
-
         </>
     );
 

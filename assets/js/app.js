@@ -5,9 +5,11 @@ import Homepage from './pages/Homepage';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import CustomersPage from './pages/CustomersPage';
 import CustomerPagePagApi from './pages/CustomerPagePagApi';
-
+import InvoicePage from './pages/InvoicePage';
 
 import '../css/app.css';
+
+
 
 
 const App = () => {
@@ -21,6 +23,8 @@ const App = () => {
                 <Switch>
 
                     <Route path='/customers' component={CustomersPage} />
+                    <Route path='/factures' component={InvoicePage} />
+
                     <Route path='/' component={Homepage} />
 
 

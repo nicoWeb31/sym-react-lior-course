@@ -1,7 +1,6 @@
 import React from 'react';
 
-
-//<Pagination curentPage={curentPage} itemsPerPage={itemsPerPage} length={customers.length} handleChangePage={handleChangePage} />
+//<Pagination curentPage={currentPage} itemsPerPage={itemsPerPage} handleChangePage={handleChangePage} length={invoices.length}/>
 
 const Pagination = ({curentPage,itemsPerPage,length,handleChangePage}) => {
 

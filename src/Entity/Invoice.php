@@ -31,11 +31,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *           "description"="Incremente le chrono d'une facture"
  * 
  * }}},
- * attributes={
- * "pagination_enabled" = true,
- * "pagination_items_per_page" = 10,
- * "order":{"sentAt":"desc"}
- * },
  * normalizationContext={"groups"={"invoices_read"}}
  * )
  * @ApiFilter(OrderFilter::class,properties={"amount"})
@@ -95,14 +90,14 @@ class Invoice
     }
 
 
-    /**
-     *recupere les users
-     *@Groups({"invoices_read","invoices_subresource"})
-     * @return User
-     */
-    public function getUser(){
-        return $this->customer->getUser();
-    }
+    // /**
+    //  *recupere les users
+    //  *@Groups({"invoices_read","invoices_subresource"})
+    //  *
+    //  */
+    // public function getUser(){
+    //     return $this->getCustomer()->getUser();
+    // }
 
 
     public function getAmount(): ?float
