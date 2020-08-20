@@ -6,6 +6,8 @@ const CustomersPage = props => {
 
     const [customers, SetCustomers] = useState([]);
     const [curentPage, SetCurrentPage] = useState(1);
+    const [search, setSearch] = useState('');
+
 
     useEffect(() => {
         axios.get('https://127.0.0.1:8000/api/clients')
@@ -41,9 +43,24 @@ const CustomersPage = props => {
 
     //---------pagination----------//
     const itemsPerPage = 10;
-    const paginationCustomer = Pagination.getData(customers,curentPage,itemsPerPage);
+
+
+    const fiteredCustomers = customers.filter(c=>c.firstName.toLowerCase().includes(search.toLowerCase())
+    || c.lastName.toLowerCase().includes(search.toLowerCase())
+    || c.email.toLowerCase().includes(search.toLowerCase())
+    || (c.company && c.company.toLowerCase().includes(search.toLowerCase()))
+    )
+
+    const paginationCustomer = Pagination.getData(fiteredCustomers,curentPage,itemsPerPage);
     const handleChangePage = (page) =>{
         SetCurrentPage(page)
+    }
+
+    //---search-----//
+    const handleSearch =(e)=>{
+        const value = e.currentTarget.value;
+        setSearch(value);
+        SetCurrentPage(1);
     }
     
 
@@ -52,6 +69,16 @@ const CustomersPage = props => {
         <>
 
             <h1>Liste des customers</h1>
+
+            <div className="form-group">
+                <input type="text" 
+                className="form-control" 
+                placeholder="Rechercher ...." 
+                onChange={handleSearch}
+                value={search}
+
+                />
+            </div>
             <table className="table table-hover">
                 <thead>
                     <tr>
@@ -93,7 +120,11 @@ const CustomersPage = props => {
 
             </table>
 
-            <Pagination curentPage={curentPage} itemsPerPage={itemsPerPage} length={customers.length} handleChangePage={handleChangePage} />
+            {
+                fiteredCustomers.length > itemsPerPage && 
+                <Pagination curentPage={curentPage} itemsPerPage={itemsPerPage} length={fiteredCustomers.length} handleChangePage={handleChangePage} />
+            }
+
 
         </>
     );
