@@ -48,16 +48,15 @@ const InvoicePage = () => {
 
     //---------pagination----------//
     const itemsPerPage = 10;
-    const handleChangePageFact = (page) => {
-        SetCurrentPage(page)
-    }
+
 
     //--------------pagination des datas -------------------//
     const paginationInvoices = Pagination.getData(invoices, currentPage, itemsPerPage);
 
     const handleChangePageFact = (page) =>{
-        SetCurrentPage(page)
+        setCurrentPage(page)
     }
+
 
     //---search-----//
     const handleSearch = (e) => {
