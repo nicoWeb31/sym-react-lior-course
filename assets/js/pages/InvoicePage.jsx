@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from "../components/Pagination";
 import axios from "axios";
 import moment from "moment";
+//import custumerApi from "../services/custumerApi";
 
 
 const STATUS_CLASSES = {
@@ -46,12 +47,23 @@ const InvoicePage = () => {
     }, [])
 
 
+    //filtrage des customers
+    const fiteredInvoices = invoices.filter(i=>
+        
+        i.customer && i.customer.firstName.toLowerCase().includes(search.toLowerCase())
+        || i.customer && i.customer.lastName.toLowerCase().includes(search.toLowerCase())
+        || i.amount.toString().startsWith(search.toLowerCase())
+        || STATUS_LABELS[i.status].toLowerCase().includes(search.toLowerCase())
+
+    )
+
+
     //---------pagination----------//
-    const itemsPerPage = 10;
+    const itemsPerPage = 25;
 
 
     //--------------pagination des datas -------------------//
-    const paginationInvoices = Pagination.getData(invoices, currentPage, itemsPerPage);
+    const paginationInvoices = Pagination.getData(fiteredInvoices, currentPage, itemsPerPage);
 
     const handleChangePageFact = (page) =>{
         setCurrentPage(page)
@@ -64,6 +76,27 @@ const InvoicePage = () => {
         setSearch(value);
         SetCurrentPage(1);
     }
+
+        //delete invoices
+        const deleteInoices = async (invoicesId) => {
+            //je cree une copie du tab
+            const originalInvoices = [...invoices];
+            //l'aproche optimiste on fait confiance a l'api et on retourne dessuite le nouveau tableau avant la eponse du server
+            //je met dessuite a jour mon tab
+            setInvoices(invoices.filter(inv => inv.id !== invoicesId))
+            //aproche pessimiste on controle la reponse de l'api si ok on trie le tableau
+    
+            try{
+                //await custumerApi.deleteI(customerId)
+                await axios.delete(`https://127.0.0.1:8000/api/invoices/${invoicesId}`);
+                //.then()
+    
+            }catch(err){
+    
+                setInvoices(originalInvoices);
+                console.log(err.response)
+            }
+        }
 
     return (
 
@@ -107,7 +140,7 @@ const InvoicePage = () => {
                                 <td className="text-center">{invoice.amount} €</td>
                                 <td>
                                     <button className="btn btn-sm btn-info">Editer</button>
-                                    <button className="btn btn-sm btn-danger">Suprimer</button>
+                                    <button className="btn btn-sm btn-danger" onClick={()=>deleteInoices(invoice.id)}>Suprimer</button>
                                 </td>
                             </tr>
 
@@ -116,7 +149,7 @@ const InvoicePage = () => {
                 </tbody>
             </table>
 
-            <Pagination curentPage={currentPage} itemsPerPage={itemsPerPage} handleChangePage={handleChangePageFact} length={invoices.length}/>
+            <Pagination curentPage={currentPage} itemsPerPage={itemsPerPage} handleChangePage={handleChangePageFact} length={fiteredInvoices.length}/>
 
         </>
     );

@@ -99,3 +99,7 @@ content-type: application/json
     "username":"johan.oreilly@witting.org",
     "password":"pass"
 }
+
+###
+
+DELETE  http://127.0.0.1:8000/api/invoices/1622

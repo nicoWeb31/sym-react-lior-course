@@ -13,7 +13,12 @@ function deleteCust(id) {
     return axios.delete(`https://127.0.0.1:8000/api/client/${id}`);
 }
 
+function deleteInvoices(id) {
+    return axios.delete(`https://127.0.0.1:8000/api/invoices/${id}`);
+}
+
 export default{
     findAll,
-    delete: deleteCust
+    delete: deleteCust,
+    deleteI:deleteInvoices
 }
