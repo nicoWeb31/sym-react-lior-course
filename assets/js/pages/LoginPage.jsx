@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from "axios";
+import authService from "../services/authApi"
 
 const LoginPage = () => {
 
@@ -24,15 +24,9 @@ const LoginPage = () => {
         e.preventDefault();
         //console.log(credentials)
         try {
-            const token = await axios.post('https://127.0.0.1:8000/api/login_check', credentials)
-                .then(resp => resp.data.token);
-            seterror("");
 
-            //je stock le token dans le storage
-            window.localStorage.setItem("authToken",token);
-                
-            //on demande a axios d'utiliser le token ds les prochaines requetes dans son header
-            axios.defaults.headers["authorization"] = `Bearer ${token}` 
+            await authService.authenticathe(credentials);
+            seterror("");
 
         }
         catch (err) {
