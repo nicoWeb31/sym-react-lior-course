@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import authService from "../services/authApi"
+import authService from "../services/authApi";
+import {Redirect} from "react-router-dom"
 
-const LoginPage = () => {
+const LoginPage = ({onLogin}) => {
 
     const [credentials, setCredentials] = useState({
         username: "",
@@ -27,11 +28,14 @@ const LoginPage = () => {
 
             await authService.authenticathe(credentials);
             seterror("");
+            onLogin(true);
+            //<Redirect to={{pathname: "/"}} />
 
         }
         catch (err) {
             console.log(err.response)
-            seterror("les indentifiant ne corresponde pas")
+            seterror("les indentifiant ne corresponde pas");
+            onLogin(false);
 
         }
 
