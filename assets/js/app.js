@@ -8,6 +8,7 @@ import CustomerPagePagApi from './pages/CustomerPagePagApi';
 import InvoicePage from './pages/InvoicePage';
 
 import '../css/app.css';
+import LoginPage from './pages/LoginPage';
 
 
 
@@ -24,8 +25,9 @@ const App = () => {
 
                     <Route path='/customers' component={CustomersPage} />
                     <Route path='/factures' component={InvoicePage} />
-
+                    <Route path='/login' component={LoginPage} />
                     <Route path='/' component={Homepage} />
+
 
 
                 </Switch>
