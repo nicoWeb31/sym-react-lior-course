@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import AuthContext from "../context/AuthContext";
 import authService from "../services/authApi";
-import {Redirect} from "react-router-dom"
+
 
 
 //histori props de router dom utiliser pour redirection avec la propriétés replace
-const LoginPage = ({onLogin,history}) => {
+const LoginPage = ({history}) => {
+
+    const {setIsAuth} =useContext(AuthContext)
 
     const [credentials, setCredentials] = useState({
         username: "",
@@ -30,14 +33,14 @@ const LoginPage = ({onLogin,history}) => {
 
             await authService.authenticathe(credentials);
             seterror("");
-            onLogin(true);
+            setIsAuth(true);
             history.replace("/customers")
 
         }
         catch (err) {
             console.log(err.response)
             seterror("les indentifiant ne corresponde pas");
-            onLogin(false);
+            setIsAuth(false);
 
         }
 

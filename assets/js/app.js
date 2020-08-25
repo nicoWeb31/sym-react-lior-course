@@ -1,23 +1,19 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import Navbar from './components/Navbar'
-import Homepage from './pages/Homepage';
-import { HashRouter, Switch, Route, withRouter, Redirect } from 'react-router-dom';
-import CustomersPage from './pages/CustomersPage';
-import CustomerPagePagApi from './pages/CustomerPagePagApi';
-import InvoicePage from './pages/InvoicePage';
-import apiService from "./services/authApi"
-
+import { HashRouter, Route, Switch, withRouter } from 'react-router-dom';
 import '../css/app.css';
+import Navbar from './components/Navbar';
+import PrivateRoute from './components/PrivateRoute';
+import AuthContext from "./context/AuthContext";
+import CustomersPage from './pages/CustomersPage';
+import Homepage from './pages/Homepage';
+import InvoicePage from './pages/InvoicePage';
 import LoginPage from './pages/LoginPage';
 import authApi from './services/authApi';
 
 
+
 authApi.setUp();
-
-const PrivateRoute = ({ path, isAuth, component }) => isAuth ? <Route path={path} component={component} /> : <Redirect to="/login" />;
-
-
 
 const App = () => {
 
@@ -27,9 +23,18 @@ const App = () => {
 
     const [isAuth, setIsAuth] = useState(authApi.isAuthenticated());
 
+    //context value
+    const contextValue = {
+        isAuth,
+        setIsAuth
+    }
+
 
 
     return (
+
+        <AuthContext.Provider value={contextValue}>
+
 
         <HashRouter>
 
@@ -40,22 +45,18 @@ const App = () => {
 
                     <PrivateRoute
                         path='/customers'
-                        isAuth={isAuth}
                         component={CustomersPage}
                     />
 
                     <PrivateRoute
                         path='/factures'
-                        isAuth={isAuth}
                         component={InvoicePage}
                     />
 
                     <Route path='/login'
-                        render={(props) => <LoginPage
-
-                            onLogin={setIsAuth} {...props} />}
-
+                        component={LoginPage}  
                     />
+
                     <Route path='/' component={Homepage} />
 
 
@@ -65,6 +66,7 @@ const App = () => {
 
         </HashRouter>
 
+        </AuthContext.Provider>   
     )
 }
 

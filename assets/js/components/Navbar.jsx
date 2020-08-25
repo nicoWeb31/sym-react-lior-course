@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import AuthService from "../services/authApi";
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
+import Authcontext from '../context/AuthContext';
 
-const Navbar = ({ isAuthenticated, onLogout,history }) => {
+const Navbar = ({history }) => {
+
+    const {isAuth,setIsAuth} = useContext(Authcontext);
 
 
     const handleLogout = () => {
         AuthService.logout();
         //<Redirect to={{pathname: "/login"}} />
         history.replace('/login');
-        onLogout(false);
+        setIsAuth(false);
 
     }
 
@@ -44,7 +47,7 @@ const Navbar = ({ isAuthenticated, onLogout,history }) => {
                 </ul>
                 <ul className="navbar-nav ml-auto">
                     {
-                        !isAuthenticated ? (
+                        !isAuth ? (
                             <>
                                 <li className="nav-item">
                                     <NavLink to="/login" className="btn btn-success"> Connexion ! </NavLink>
