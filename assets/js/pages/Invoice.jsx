@@ -8,7 +8,9 @@ import axios from "axios";
 
 
 
-const Invoice = ({history}) => {
+const Invoice = ({history,match}) => {
+
+    const { id = "new"} = match.params;
 
     const [invoice, setInvoice] = useState({
         amount: "",
@@ -22,18 +24,40 @@ const Invoice = ({history}) => {
         status: ""
     })
 
+    const [editing, setEditing] = useState(false)
+
     const [customers,setCustomers] = useState([]);
 
     const fetchCustomers = async () =>{
         try{
             const data =  await customersServive.findAll();
             setCustomers(data);
-            if(!invoice.customer) setInvoice({...invoice, customer:data[0].id});
+            if(!invoice.customer && id === "new") setInvoice({...invoice, customer:data[0].id});
             
         }catch(err){
             console.log(err)
         }
     }
+
+    const fetchInvoice = async (id) =>{
+        try{
+            const data = await axios.get(`https://127.0.0.1:8000/api/invoices/${id}`).then(response=>response.data);
+            console.log(data);
+            const {amount, status,customer} = data;
+            setInvoice({amount,status,customer:customer.id});
+
+        }catch(err){
+            console.log(err.response)
+        }
+    }
+
+    useEffect (()=>{
+        if(id !== "new"){
+            setEditing(true);
+            fetchInvoice(id);
+        }
+    },[id])
+        
 
     useEffect(()=>{
         fetchCustomers();
@@ -49,9 +73,21 @@ const Invoice = ({history}) => {
         e.preventDefault();
 
         try{
-            const response = await axios.post("https://127.0.0.1:8000/api/invoices",{...invoice,customer:`/api/client/${invoice.customer}`})
-            //flash sucess
-            history.replace("/factures")
+
+            if(editing){
+                const response = await axios.put(`https://127.0.0.1:8000/api/invoices/${id}`,{...invoice,customer:`/api/client/${invoice.customer}`})
+                //todo flash sucess
+                history.replace("/factures")
+
+
+            }else{
+
+                const response = await axios.post("https://127.0.0.1:8000/api/invoices",{...invoice,customer:`/api/client/${invoice.customer}`})
+                //todo flash sucess
+                history.replace("/factures")
+            }
+
+
         }catch(err){
             console.log(err.response)
             
@@ -72,7 +108,10 @@ const Invoice = ({history}) => {
 
     return (
         <>
-            <h1>Création d'une facture</h1>
+        {
+            !editing ? <h1>Création d'une facture</h1>: <h1>Modification d'une facture</h1> 
+        }
+            
 
             <form onSubmit={handleSubmit}>
 
@@ -110,7 +149,7 @@ const Invoice = ({history}) => {
 
                     <option value="SENT">Envoyé</option>
                     <option value="PAID">Payé</option>
-                    <option value="CANCELED">Annulé</option>
+                    <option value="CANCELLED">Annulé</option>
                 </Select>
 
 

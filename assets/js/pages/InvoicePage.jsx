@@ -141,7 +141,7 @@ const InvoicePage = () => {
                                 </td>
                                 <td className="text-center">{invoice.amount} €</td>
                                 <td>
-                                    <button className="btn btn-sm btn-info">Editer</button>
+                                    <Link to={`/facture/${invoice.id}`} className="btn btn-sm btn-info">Editer</Link>
                                     <button className="btn btn-sm btn-danger" onClick={() => deleteInoices(invoice.id)}>Suprimer</button>
                                 </td>
                             </tr>
