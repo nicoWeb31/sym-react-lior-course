@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Field from '../components/forms/Field';
 import axios from "axios";
+import customerService from "../services/custumerApi"
 
 
-const CustomerPage = props => {
+const CustomerPage = ({match,history}) => {
 
-    const { id = "new" } = props.match.params;
+    const { id = "new" } = match.params;
 
 
     const [customer, setCustomer] = useState({
@@ -26,17 +27,16 @@ const CustomerPage = props => {
     const fetchCustomer = async id => {
         try {
 
-            const data = await axios.get(`https://127.0.0.1:8000/api/client/${id}`).then(
-                response => response.data);
-            //console.log(data)
+            const data = await customerService.find(id)
             const { firstName, lastName, email, company } = data;
             setCustomer({ firstName, lastName, email, company })
 
         } catch (err) {
             console.log(err.response)
+            history.replace("/customers")
         }
-
     }
+
 
 
     const [editing, setEditing] = useState(false);
@@ -59,25 +59,22 @@ const CustomerPage = props => {
         try {
             //si edition
             if (editing) {
-                const response = await axios.put(`https://127.0.0.1:8000/api/client/${id}`, customer)
+                await customerService.update(id,customer);
                 //Todo notif de success
-
-                console.log(response)
             }else{
                 //si creation
-                const response = await axios.post('https://127.0.0.1:8000/api/clients', customer)
-                //console.log(response.data)
+                await customerService.put(customer);
                 setErrors({})
                 //Todo notif de success
-                props.history.replace("/customers");
+                history.replace("/customers");
 
             }
         } catch (err) {
 
             if (err.response.data.violations) {
                 const apiErr = {}
-                err.response.data.violations.map(violation => {
-                    apiErr[violation.propertyPath] = violation.message;
+                err.response.data.violations.map(({propertyPath,message}) => {
+                    apiErr[propertyPath] = message;
                 })
                 console.log(apiErr);
 
