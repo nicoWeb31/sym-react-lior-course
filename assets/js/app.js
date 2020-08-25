@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './components/Navbar'
 import Homepage from './pages/Homepage';
-import { HashRouter, Switch, Route, withRouter } from 'react-router-dom';
+import { HashRouter, Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import CustomersPage from './pages/CustomersPage';
 import CustomerPagePagApi from './pages/CustomerPagePagApi';
 import InvoicePage from './pages/InvoicePage';
@@ -14,6 +14,10 @@ import authApi from './services/authApi';
 
 
 authApi.setUp();
+
+const PrivateRoute = ({ path, isAuth, component }) => isAuth ? <Route path={path} component={component} /> : <Redirect to="/login" />;
+
+
 
 const App = () => {
 
@@ -34,14 +38,24 @@ const App = () => {
             <main className="container pt-5">
                 <Switch>
 
-                    <Route path='/customers' component={CustomersPage} />
-                    <Route path='/factures' component={InvoicePage} />
-                    <Route path='/login'
-                        render={(props)=> <LoginPage 
-                        
-                        onLogin={setIsAuth} {...props}/>} 
+                    <PrivateRoute
+                        path='/customers'
+                        isAuth={isAuth}
+                        component={CustomersPage}
+                    />
 
-                        />
+                    <PrivateRoute
+                        path='/factures'
+                        isAuth={isAuth}
+                        component={InvoicePage}
+                    />
+
+                    <Route path='/login'
+                        render={(props) => <LoginPage
+
+                            onLogin={setIsAuth} {...props} />}
+
+                    />
                     <Route path='/' component={Homepage} />
 
 
