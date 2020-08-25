@@ -8,9 +8,11 @@ import AuthContext from "./context/AuthContext";
 import CustomerPage from './pages/CustomerPage';
 import CustomersPage from './pages/CustomersPage';
 import Homepage from './pages/Homepage';
+import Invoice from './pages/Invoice';
 import InvoicePage from './pages/InvoicePage';
 import LoginPage from './pages/LoginPage';
 import authApi from './services/authApi';
+
 
 
 
@@ -52,6 +54,11 @@ const App = () => {
                         <PrivateRoute
                             path='/factures'
                             component={InvoicePage}
+                        />
+
+                        <PrivateRoute
+                            path='/facture/:id'
+                            component={Invoice}
                         />
 
                         <PrivateRoute
