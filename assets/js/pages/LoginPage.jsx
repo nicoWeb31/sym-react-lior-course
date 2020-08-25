@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import authService from "../services/authApi";
 import {Redirect} from "react-router-dom"
 
-const LoginPage = ({onLogin}) => {
+
+//histori props de router dom utiliser pour redirection avec la propriétés replace
+const LoginPage = ({onLogin,history}) => {
 
     const [credentials, setCredentials] = useState({
         username: "",
@@ -29,7 +31,7 @@ const LoginPage = ({onLogin}) => {
             await authService.authenticathe(credentials);
             seterror("");
             onLogin(true);
-            //<Redirect to={{pathname: "/"}} />
+            history.replace("/customers")
 
         }
         catch (err) {

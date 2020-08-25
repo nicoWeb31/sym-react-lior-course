@@ -46,16 +46,32 @@ function setUp() {
             setAxiosToken(token);
         } 
     }
-
-
-
-
-
 }
+
+function isAuthenticated(){
+    const token = window.localStorage.getItem('authToken');
+    if (token) {
+        const {exp : expiration} = jwt(token);
+        //console.log(expiration);
+        if (expiration * 1000 > new Date().getTime) {
+            return true
+        }else{
+            return false
+        } 
+    }else{
+        return false
+    }
+}
+
+
+
+
+
 
 
 export default {
     authenticathe,
     logout,
-    setUp
+    setUp,
+    isAuthenticated
 }

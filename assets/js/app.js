@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from './components/Navbar'
 import Homepage from './pages/Homepage';
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route, withRouter } from 'react-router-dom';
 import CustomersPage from './pages/CustomersPage';
 import CustomerPagePagApi from './pages/CustomerPagePagApi';
 import InvoicePage from './pages/InvoicePage';
@@ -18,13 +18,18 @@ authApi.setUp();
 const App = () => {
 
 
-    const [isAuth, setIsAuth] = useState(false);
+    // retourne un composant doter des prporiete du router dom
+    const NavBarWithRouter = withRouter(Navbar);
+
+    const [isAuth, setIsAuth] = useState(authApi.isAuthenticated());
+
+
 
     return (
 
         <HashRouter>
 
-            <Navbar isAuthenticated={isAuth} onLogout={setIsAuth} />
+            <NavBarWithRouter isAuthenticated={isAuth} onLogout={setIsAuth} />
 
             <main className="container pt-5">
                 <Switch>
@@ -32,9 +37,9 @@ const App = () => {
                     <Route path='/customers' component={CustomersPage} />
                     <Route path='/factures' component={InvoicePage} />
                     <Route path='/login'
-                        render={()=> <LoginPage 
+                        render={(props)=> <LoginPage 
                         
-                        onLogin={setIsAuth} />} 
+                        onLogin={setIsAuth} {...props}/>} 
 
                         />
                     <Route path='/' component={Homepage} />
