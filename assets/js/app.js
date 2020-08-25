@@ -5,6 +5,7 @@ import '../css/app.css';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import AuthContext from "./context/AuthContext";
+import CustomerPage from './pages/CustomerPage';
 import CustomersPage from './pages/CustomersPage';
 import Homepage from './pages/Homepage';
 import InvoicePage from './pages/InvoicePage';
@@ -36,37 +37,43 @@ const App = () => {
         <AuthContext.Provider value={contextValue}>
 
 
-        <HashRouter>
+            <HashRouter>
 
-            <NavBarWithRouter isAuthenticated={isAuth} onLogout={setIsAuth} />
+                <NavBarWithRouter isAuthenticated={isAuth} onLogout={setIsAuth} />
 
-            <main className="container pt-5">
-                <Switch>
+                <main className="container pt-5">
+                    <Switch>
 
-                    <PrivateRoute
-                        path='/customers'
-                        component={CustomersPage}
-                    />
+                        <PrivateRoute
+                            path='/customers'
+                            component={CustomersPage}
+                        />
 
-                    <PrivateRoute
-                        path='/factures'
-                        component={InvoicePage}
-                    />
+                        <PrivateRoute
+                            path='/factures'
+                            component={InvoicePage}
+                        />
 
-                    <Route path='/login'
-                        component={LoginPage}  
-                    />
+                        <PrivateRoute
+                            path='/customer/:id'
+                            component={CustomerPage}
+                        />
 
-                    <Route path='/' component={Homepage} />
+                        <Route path='/login'
+                            component={LoginPage}
+                        />
+
+
+                        <Route path='/' component={Homepage} />
 
 
 
-                </Switch>
-            </main>
+                    </Switch>
+                </main>
 
-        </HashRouter>
+            </HashRouter>
 
-        </AuthContext.Provider>   
+        </AuthContext.Provider>
     )
 }
 
