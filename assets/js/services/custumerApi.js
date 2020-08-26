@@ -1,5 +1,6 @@
 import axios from "axios";
-import Cache from "./cache"
+import Cache from "./cache";
+import { CUSTOMERS_API,CUSTOMER_API} from "../config";
 
 
 async function findAll() {
@@ -9,7 +10,7 @@ async function findAll() {
 
     if (cachedCusomers) return cachedCusomers;
 
-    return axios.get('https://127.0.0.1:8000/api/clients')
+    return axios.get(CUSTOMERS_API)
         .then(rep => {
 
             const customers = rep.data['hydra:member'];
@@ -25,7 +26,7 @@ function deleteCust(id) {
 
 
 
-    return axios.delete(`https://127.0.0.1:8000/api/client/${id}`).then(async response => {
+    return axios.delete(`${CUSTOMER_API}/${id}`).then(async response => {
 
         // j'essaie de recuperer les customers du cache
         const cachedCusomers = await Cache.get("customers");
@@ -41,7 +42,7 @@ function deleteCust(id) {
 
 
 
-function find(id) {
+async function find(id) {
 
     // j'essaie de recuperer les customers du cache
     const cachedCusomer = await Cache.get(`customers.${id}`);
@@ -51,7 +52,7 @@ function find(id) {
 
 
 
-    return axios.get(`https://127.0.0.1:8000/api/client/${id}`)
+    return axios.get(`${CUSTOMER_API}/${id}`)
         .then(
             response => {
                 const customer = response.data;
@@ -66,7 +67,7 @@ function find(id) {
 
 
 function update(id, customer) {
-    return axios.put(`https://127.0.0.1:8000/api/client/${id}`, customer).then(async response => {
+    return axios.put(`${CUSTOMER_API}/${id}`, customer).then(async response => {
 
         // j'essaie de recuperer les customers du cache
         const cachedCusomers = await Cache.get("customers");
@@ -92,7 +93,7 @@ function update(id, customer) {
 
 function create(customer) {
 
-    return axios.post('https://127.0.0.1:8000/api/clients', customer).then(async response => {
+    return axios.post(CUSTOMERS_API, customer).then(async response => {
         // j'essaie de recuperer les customers du cache
         const cachedCusomers = await Cache.get("customers");
         // si j'ai des customers dans le cache je doit mettre a jour et ajouter la personne qui vient d'etre add
