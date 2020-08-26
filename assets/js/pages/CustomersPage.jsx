@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Pagination from "../components/Pagination";
 import custumerApi from "../services/custumerApi";
 import {Link} from "react-router-dom"
+import { toast } from 'react-toastify';
 
 const CustomersPage = props => {
 
@@ -16,7 +17,7 @@ const CustomersPage = props => {
             const data = await custumerApi.findAll()
             SetCustomers(data)    
         }catch(err){
-            console.log(err.reponse);
+            toast.error("Une erreur est survenue, impossible de charger les clients !")
         }
     }
 
@@ -34,13 +35,13 @@ const CustomersPage = props => {
         //aproche pessimiste on controle la reponse de l'api si ok on trie le tableau
 
         try{
-            await custumerApi.delete(customerId)
-            .then()
+            await custumerApi.delete(customerId);
+            toast.success("Le client a bien été modifier ! ")
 
         }catch(err){
 
             SetCustomers(originalCustomers);
-            console.log(err.response)
+            toast.error("Impossible de supprimer le client !")
         }
     }
 

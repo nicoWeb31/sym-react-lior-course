@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Field from '../components/forms/Field';
 import Select from "../components/forms/Select";
 import customersServive from "../services/custumerApi";
@@ -36,7 +37,7 @@ const Invoice = ({ history, match }) => {
 
         } catch (err) {
             console.log(err)
-               //todo alerte
+               toast.error("Une erreur est survenu !")
             history.replace("/factures")
         }
     }
@@ -49,7 +50,7 @@ const Invoice = ({ history, match }) => {
 
         } catch (err) {
             console.log(err.response)
-            //todo alerte
+            toast.error("Impossible de chager la facture demandé !")
             history.replace("/factures")
         }
     }
@@ -79,14 +80,14 @@ const Invoice = ({ history, match }) => {
 
             if (editing) {
                 await InvoicesService.update(id, invoice)
-                //todo flash sucess
+                toast.success("Facture modifiés avec succès !")
                 history.replace("/factures")
 
 
             } else {
 
                 await InvoicesService.create(invoice)
-                //todo flash sucess
+                toast.success("Facture crée avec succès !")
                 history.replace("/factures")
             }
 
@@ -101,7 +102,7 @@ const Invoice = ({ history, match }) => {
                 })
                 console.log(apiErr);
 
-                //todo notif err 
+                toast.error("Une erreur est survenue dans votre formulaire !") 
                 setErros(apiErr);
             }
         }

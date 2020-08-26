@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Field from '../components/forms/Field';
-import axios from "axios";
 import customerService from "../services/custumerApi"
+import { toast } from 'react-toastify';
 
 
 const CustomerPage = ({match,history}) => {
@@ -32,7 +32,7 @@ const CustomerPage = ({match,history}) => {
             setCustomer({ firstName, lastName, email, company })
 
         } catch (err) {
-            console.log(err.response)
+            toast.error("Une erreur est survenue, impossible de charger le client !")
             history.replace("/customers")
         }
     }
@@ -62,12 +62,13 @@ const CustomerPage = ({match,history}) => {
             //si edition
             if (editing) {
                 await customerService.update(id,customer);
-                //Todo notif de success
+                toast.success("le client a bien été modifier ! ")
             }else{
                 //si creation
                 await customerService.put(customer);
                 setErrors({})
-                //Todo notif de success
+                toast.success("le client a bien été crée ! ")
+                
                 history.replace("/customers");
 
             }
@@ -80,7 +81,7 @@ const CustomerPage = ({match,history}) => {
                 })
                 console.log(apiErr);
 
-                //todo notif err 
+                toast.error("des erreurs dans le formulaire ! ")
                 setErrors(apiErr);
             }
         }

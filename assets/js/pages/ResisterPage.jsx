@@ -2,6 +2,7 @@ import userService from "../services/userApi";
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Field from '../components/forms/Field';
+import { toast } from "react-toastify";
 
 
 
@@ -35,6 +36,7 @@ const ResisterPage = ({history}) => {
         if(user.passwordConfirm !== user.password){
             apiErr.passwordConfirm = "votre confirmation de mdp ne correspond pas !";
             setErrors(apiErr);
+            toast.error("Une erreur est survenue dans votre formulaire !")
             return;
         }
 
@@ -43,7 +45,7 @@ const ResisterPage = ({history}) => {
         try {
             const response = await userService.create(user);
             console.log(response);
-            //todo success
+            toast.success("vous $etes desormais inscrit, vous pouvez vous connecter !")
             setErrors({});
             history.replace('/login');
         }catch(err){
@@ -55,7 +57,7 @@ const ResisterPage = ({history}) => {
                 })
                 console.log(apiErr);
 
-                //todo notif err 
+                toast.error("Une erreur est survenue dans votre formulaire !")
                 setErrors(apiErr);
             }
         }

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import AuthService from "../services/authApi";
 import { NavLink } from 'react-router-dom';
 import Authcontext from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Navbar = ({history }) => {
 
@@ -10,7 +11,8 @@ const Navbar = ({history }) => {
 
     const handleLogout = () => {
         AuthService.logout();
-        //<Redirect to={{pathname: "/login"}} />
+        //Toast
+        toast.info("Vous ếtes deconnecté ! ")
         history.replace('/login');
         setIsAuth(false);
 

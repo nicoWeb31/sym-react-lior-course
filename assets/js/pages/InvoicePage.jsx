@@ -1,6 +1,7 @@
 import moment from "moment";
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Pagination from "../components/Pagination";
 import invoicesApi from "../services/invoices";
 
@@ -36,7 +37,7 @@ const InvoicePage = () => {
             const data = await invoicesApi.findAll()
             setInvoices(data);
         } catch (err) {
-            console.log(err.response)
+            toast.error("erreur lors du chargement des factures ! ")
         }
     }
 
@@ -87,9 +88,10 @@ const InvoicePage = () => {
         try {
             //await custumerApi.deleteI(customerId)
             await invoicesApi.delete(invoicesId);
+            toast.success(`Facture n° ${invoicesId} supprimer avec succées !`)
 
         } catch (err) {
-
+            toast.error("Une erreur est survenu")
             setInvoices(originalInvoices);
             console.log(err.response)
         }

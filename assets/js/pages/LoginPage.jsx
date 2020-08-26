@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import AuthContext from "../context/AuthContext";
 import authService from "../services/authApi";
 import Field from "../components/forms/Field"
+import { toast } from 'react-toastify';
 
 
 
@@ -35,6 +36,7 @@ const LoginPage = ({history}) => {
             await authService.authenticathe(credentials);
             seterror("");
             setIsAuth(true);
+            toast.success("Vous ếtes connecté")
             history.replace("/customers")
 
         }
@@ -42,6 +44,7 @@ const LoginPage = ({history}) => {
             console.log(err.response)
             seterror("les indentifiant ne corresponde pas");
             setIsAuth(false);
+            toast.error("Une erreur est survenue !")
 
         }
 
