@@ -1,35 +1,113 @@
 import axios from "axios";
+import Cache from "./cache"
 
 
 async function findAll() {
-    return axios.get('https://127.0.0.1:8000/api/clients')
-    .then(rep => rep.data['hydra:member'])
-    
-}
 
+    // j'essaie de recuperer les customers du cache
+    const cachedCusomers = await Cache.get("customers");
+
+    if (cachedCusomers) return cachedCusomers;
+
+    return axios.get('https://127.0.0.1:8000/api/clients')
+        .then(rep => {
+
+            const customers = rep.data['hydra:member'];
+            //et on envoi au cache la key value
+            Cache.set("customers", customers)
+            return customers
+        })
+
+}
 
 
 function deleteCust(id) {
-    return axios.delete(`https://127.0.0.1:8000/api/client/${id}`);
+
+
+
+    return axios.delete(`https://127.0.0.1:8000/api/client/${id}`).then(async response => {
+
+        // j'essaie de recuperer les customers du cache
+        const cachedCusomers = await Cache.get("customers");
+        // si j'ai des customers dans le cache je doit mettre a jour et supprimer la personne qui vient d'etre suprimmer
+
+        if (cachedCusomers) {
+            Cache.set("customers", cachedCusomers.filter(c => c.id !== +id))
+        }
+        return response;
+
+    })
 }
 
 
-function find(id){
+
+function find(id) {
+
+    // j'essaie de recuperer les customers du cache
+    const cachedCusomer = await Cache.get(`customers.${id}`);
+
+    if (cachedCusomer) return cachedCusomer;
+
+
+
+
     return axios.get(`https://127.0.0.1:8000/api/client/${id}`)
-            .then(
-                response => response.data);
-}
+        .then(
+            response => {
+                const customer = response.data;
+                Cache.set(`customers.${id}`, customer)
 
-function update(id,customer){
-    return axios.put(`https://127.0.0.1:8000/api/client/${id}`, customer);
-}
-
-function create(customer){
-    return axios.post('https://127.0.0.1:8000/api/clients', customer)
+                return customer;
+            });
 }
 
 
-export default{
+
+
+
+function update(id, customer) {
+    return axios.put(`https://127.0.0.1:8000/api/client/${id}`, customer).then(async response => {
+
+        // j'essaie de recuperer les customers du cache
+        const cachedCusomers = await Cache.get("customers");
+        const cachedCusomer = await Cache.get(`customers.${id}`);
+
+        if(cachedCusomer){
+            Cache.set(`customers.${id}`,response.data)
+        }
+
+
+        if (cachedCusomers) {
+            // si j'ai des customers dans le cache je doit mettre a jour et modifier la personne qui vient d'etre modifier
+
+            const index = cachedCusomers.findIndex(c => c.id === +id);
+            const newCachedCustomer = response.data
+            cachedCusomers[index] = newCachedCustomer;
+
+            //Cache.set("customers",cachedCusomers)
+        }
+        return response;
+    })
+}
+
+function create(customer) {
+
+    return axios.post('https://127.0.0.1:8000/api/clients', customer).then(async response => {
+        // j'essaie de recuperer les customers du cache
+        const cachedCusomers = await Cache.get("customers");
+        // si j'ai des customers dans le cache je doit mettre a jour et ajouter la personne qui vient d'etre add
+
+        if (cachedCusomers) {
+            Cache.set("customers", [...cachedCusomers, response.data])
+        }
+        return response;
+    })
+}
+
+
+
+
+export default {
     findAll,
     delete: deleteCust,
     find,
