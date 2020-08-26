@@ -3,19 +3,22 @@ import Pagination from "../components/Pagination";
 import custumerApi from "../services/custumerApi";
 import {Link} from "react-router-dom"
 import { toast } from 'react-toastify';
+import LoaderTable from '../components/loaders/LoaderTable';
 
 const CustomersPage = props => {
 
     const [customers, SetCustomers] = useState([]);
     const [curentPage, SetCurrentPage] = useState(1);
     const [search, setSearch] = useState('');
+    const [loading,setLoading] = useState(true)
 
 
     //recup des customers
     const fetchCustomers = async () =>{
         try{
             const data = await custumerApi.findAll()
-            SetCustomers(data)    
+            SetCustomers(data) 
+            setLoading(false)
         }catch(err){
             toast.error("Une erreur est survenue, impossible de charger les clients !")
         }
@@ -37,6 +40,7 @@ const CustomersPage = props => {
         try{
             await custumerApi.delete(customerId);
             toast.success("Le client a bien été modifier ! ")
+            
 
         }catch(err){
 
@@ -114,7 +118,7 @@ const CustomersPage = props => {
 
                         <tr key={customer.id}>
                             <td>{customer.id}</td>
-                            <td><a href="">{customer.firstName} {customer.lastName}</a></td>
+                            <td><Link to={`/customer/${customer.id}`}href="">{customer.firstName} {customer.lastName}</Link></td>
                             <td>{customer.email}</td>
                             <td>{customer.company}</td>
                             <td className="text-center">
@@ -136,6 +140,10 @@ const CustomersPage = props => {
 
 
             </table>
+            {
+                loading && <LoaderTable/>
+            }
+            
 
             {
                 fiteredCustomers.length > itemsPerPage && 

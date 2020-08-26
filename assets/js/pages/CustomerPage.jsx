@@ -59,19 +59,18 @@ const CustomerPage = ({match,history}) => {
         e.preventDefault();
         //console.log(customer)
         try {
+            setErrors({})
             //si edition
             if (editing) {
                 await customerService.update(id,customer);
                 toast.success("le client a bien été modifier ! ")
             }else{
                 //si creation
-                await customerService.put(customer);
-                setErrors({})
+                await customerService.create(customer);
                 toast.success("le client a bien été crée ! ")
-                
                 history.replace("/customers");
-
             }
+            
         } catch (err) {
 
             if (err.response.data.violations) {

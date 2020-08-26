@@ -2,6 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import LoaderTable from "../components/loaders/LoaderTable";
 import Pagination from "../components/Pagination";
 import invoicesApi from "../services/invoices";
 
@@ -31,11 +32,13 @@ const InvoicePage = () => {
     const [invoices, setInvoices] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState("");
+    const [loading,setLoading] = useState(true)
 
     const fetchInvoices = async () => {
         try {
             const data = await invoicesApi.findAll()
             setInvoices(data);
+            setLoading(false)
         } catch (err) {
             toast.error("erreur lors du chargement des factures ! ")
         }
@@ -134,8 +137,8 @@ const InvoicePage = () => {
                             <tr key={invoice.id}>
                                 <td>{invoice.chrono}</td>
                                 <td>
-                                    <a href="#">{invoice.customer && invoice.customer.firstName} {invoice.customer && invoice.customer.lastName}
-                                    </a>
+                                    <Link to={`/customer/${invoice.customer.id}`} href="#">{invoice.customer && invoice.customer.firstName} {invoice.customer && invoice.customer.lastName}
+                                    </Link>
                                 </td>
                                 <td className="text-center">{formatDate(invoice.sentAt)}</td>
                                 <td className="text-center">
@@ -152,6 +155,11 @@ const InvoicePage = () => {
                     }
                 </tbody>
             </table>
+            {
+                loading && 
+            <LoaderTable/>
+            }
+
 
             <Pagination curentPage={currentPage} itemsPerPage={itemsPerPage} handleChangePage={handleChangePageFact} length={fiteredInvoices.length} />
 
