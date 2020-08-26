@@ -10,7 +10,8 @@ import React from 'react';
 // error
 
 
-const Field = ({name,label,value,onChanges,type = "text",placeholder="",error=""}) => {
+
+const Field = ({name,label,value,onChanges,type = "text",placeholder="",error="",disabled=false}) => {
     return (
         <div className="form-group">
             <label htmlFor={name}>{label}</label>
@@ -21,6 +22,7 @@ const Field = ({name,label,value,onChanges,type = "text",placeholder="",error=""
                 id={name}
                 value={value}
                 onChange={onChanges}
+                disabled={disabled}
 
             />
 

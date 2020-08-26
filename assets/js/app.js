@@ -11,6 +11,7 @@ import Homepage from './pages/Homepage';
 import Invoice from './pages/Invoice';
 import InvoicePage from './pages/InvoicePage';
 import LoginPage from './pages/LoginPage';
+import ResisterPage from './pages/ResisterPage';
 import authApi from './services/authApi';
 
 
@@ -69,6 +70,8 @@ const App = () => {
                         <Route path='/login'
                             component={LoginPage}
                         />
+
+                        <Route path="/register" component={ResisterPage}/>
 
 
                         <Route path='/' component={Homepage} />

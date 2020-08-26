@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import Field from '../components/forms/Field';
 import Select from "../components/forms/Select";
 import customersServive from "../services/custumerApi";
-import axios from "axios";
+import InvoicesService from "../services/invoices";
 
 
 
 
-const Invoice = ({history,match}) => {
+const Invoice = ({ history, match }) => {
 
-    const { id = "new"} = match.params;
+    const { id = "new" } = match.params;
 
     const [invoice, setInvoice] = useState({
         amount: "",
@@ -26,43 +26,46 @@ const Invoice = ({history,match}) => {
 
     const [editing, setEditing] = useState(false)
 
-    const [customers,setCustomers] = useState([]);
+    const [customers, setCustomers] = useState([]);
 
-    const fetchCustomers = async () =>{
-        try{
-            const data =  await customersServive.findAll();
+    const fetchCustomers = async () => {
+        try {
+            const data = await customersServive.findAll();
             setCustomers(data);
-            if(!invoice.customer && id === "new") setInvoice({...invoice, customer:data[0].id});
-            
-        }catch(err){
+            if (!invoice.customer && id === "new") setInvoice({ ...invoice, customer: data[0].id });
+
+        } catch (err) {
             console.log(err)
+               //todo alerte
+            history.replace("/factures")
         }
     }
 
-    const fetchInvoice = async (id) =>{
-        try{
-            const data = await axios.get(`https://127.0.0.1:8000/api/invoices/${id}`).then(response=>response.data);
-            console.log(data);
-            const {amount, status,customer} = data;
-            setInvoice({amount,status,customer:customer.id});
+    const fetchInvoice = async (id) => {
+        try {
+            const data = await InvoicesService.find(id)
+            const { amount, status, customer } = data;
+            setInvoice({ amount, status, customer: customer.id });
 
-        }catch(err){
+        } catch (err) {
             console.log(err.response)
+            //todo alerte
+            history.replace("/factures")
         }
     }
 
-    useEffect (()=>{
-        if(id !== "new"){
+    useEffect(() => {
+        if (id !== "new") {
             setEditing(true);
             fetchInvoice(id);
         }
-    },[id])
-        
+    }, [id])
 
-    useEffect(()=>{
+
+    useEffect(() => {
         fetchCustomers();
-        
-    },[])
+
+    }, [])
 
     const handlChange = e => {
         const { name, value } = e.currentTarget;
@@ -72,28 +75,28 @@ const Invoice = ({history,match}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try{
+        try {
 
-            if(editing){
-                const response = await axios.put(`https://127.0.0.1:8000/api/invoices/${id}`,{...invoice,customer:`/api/client/${invoice.customer}`})
+            if (editing) {
+                await InvoicesService.update(id, invoice)
                 //todo flash sucess
                 history.replace("/factures")
 
 
-            }else{
+            } else {
 
-                const response = await axios.post("https://127.0.0.1:8000/api/invoices",{...invoice,customer:`/api/client/${invoice.customer}`})
+                await InvoicesService.create(invoice)
                 //todo flash sucess
                 history.replace("/factures")
             }
 
 
-        }catch(err){
+        } catch (err) {
             console.log(err.response)
-            
+
             if (err.response.data.violations) {
                 const apiErr = {}
-                err.response.data.violations.map(({propertyPath,message}) => {
+                err.response.data.violations.map(({ propertyPath, message }) => {
                     apiErr[propertyPath] = message;
                 })
                 console.log(apiErr);
@@ -108,10 +111,10 @@ const Invoice = ({history,match}) => {
 
     return (
         <>
-        {
-            !editing ? <h1>Création d'une facture</h1>: <h1>Modification d'une facture</h1> 
-        }
-            
+            {
+                !editing ? <h1>Création d'une facture</h1> : <h1>Modification d'une facture</h1>
+            }
+
 
             <form onSubmit={handleSubmit}>
 
@@ -132,11 +135,11 @@ const Invoice = ({history,match}) => {
                     error={errors.customer}
                     onChang={handlChange}
                 >
-                    {customers.map(customer => 
+                    {customers.map(customer =>
                         <option key={customer.id} value={customer.id}>{customer.firstName} {customer.lastName}</option>
                     )
                     }
-                    
+
                 </Select>
 
                 <Select
